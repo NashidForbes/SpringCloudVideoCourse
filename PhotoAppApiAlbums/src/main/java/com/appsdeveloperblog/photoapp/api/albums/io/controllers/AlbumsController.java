@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,8 @@ public class AlbumsController {
     @Autowired
     AlbumsService albumsService;
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    @GetMapping( 
+    @PreAuthorize("principal == #id or hasAuthority('PROFILE.READ') or hasRole('ADMIN')")
+    @GetMapping(
             produces = { 
                 MediaType.APPLICATION_JSON_VALUE,
                 MediaType.APPLICATION_XML_VALUE,
